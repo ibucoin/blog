@@ -1,0 +1,29 @@
+---
+import { Icon } from 'astro-iconify'
+import { SITE_TITLE, MENUS } from "../config";
+
+---
+
+<header class="py-4 pt-2 px-4 gap-5 mb-10 w-full">
+    <div class="flex w-full justify-between items-end border-b lg:border-none pb-4 lg:pb-0">
+        <a class="font-semibold text-xl flex gap-2 items-center group" href="/"><Icon name="radix-icons:crumpled-paper" class="w-5 h-5 group-hover:rotate-[17deg]" />Blog</a>
+        
+        <div class="flex flex-row gap-4">
+            {
+              MENUS.map(({link,target,title}) => (
+                <a href={link} target={target} 
+                class:list={[
+                    {
+                      'text-orange-700':
+                        Astro.url.pathname === link ||
+                        (link !== '/' && Astro.url.pathname.startsWith(link)),
+                    },
+                  ]}
+                class="h-full text-sm hover:text-orange-700">
+                  {title}
+                </a>
+              ))
+            }
+          </div>
+      </div>
+</header>

@@ -1,5 +1,7 @@
 ---
-
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro"	
+import AboutMe from "../components/AboutMe.astro"
 ---
 
 <html lang="en">
@@ -10,7 +12,11 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1 class="text-red test">Astro-red</h1>
+	<body class="w-full max-w-screen-md mx-auto my-4 transition-colors duration-300">
+		<Header />
+		<main class="flex flex-col justify-center">
+			<Hero />
+			<AboutMe />
+		</main>
 	</body>
 </html>

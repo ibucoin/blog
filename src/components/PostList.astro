@@ -1,0 +1,60 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import TagLink from "./TagLink.astro";
+
+const {posts} = Astro.props
+
+type Post = CollectionEntry<'blog'>;
+
+const postByYear: {
+  [year: number]: Post[];
+} = {}
+
+posts.forEach((post) => {
+  const year = new Date(post.data.date).getFullYear()
+  if (!postByYear[year]) {
+    postByYear[year] = []
+  }
+  postByYear[year].push(post)
+})
+---
+<div class="px-4 flex flex-col gap-4 mt-16">
+    {
+        Object.keys(postByYear).sort(
+          (a, b) => parseInt(b) - parseInt(a)
+        ).map((year) => (
+          <div class="flex flex-col">
+            <h2 class=" text-black dark:text-white font-bold mb-8">{year}</h2>
+            <div class="flex flex-col gap-4">
+              
+            {
+              postByYear[parseInt(year)].map((post: Post) => (
+              <div class="flex gap-2 justify-between border-b pb-4">
+            <div class="flex flex-col gap-4">
+              <FormattedDate date={post.data.date} />
+              <a class="font-bold text-lg" href={`/posts/${post.slug}`}>
+                {post.data.title}
+              </a>
+              <div class="flex gap-2">
+                {post.data.tags?.map((i: string) => {
+                  return <TagLink tag={i} />;
+                })}
+              </div>
+            </div>
+            <a href={`/posts/${post.slug}`}>
+              <img
+                src={post.data.cover}
+                alt=""
+                class="w-40 h-24 bg-contain border border-gray-200"
+              />
+            </a>
+          </div>
+              ))
+            }
+            </div>
+
+          </div>
+        ))
+    }
+</div>

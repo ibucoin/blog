@@ -20,11 +20,6 @@ export const MENUS = [
     target: '_self',
   },
   {
-    title: '归档',
-    link: '/date',
-    target: '_self',
-  },
-  {
     title: 'GitHub',
     link: 'https://github.com/ibucoin',
     target: '_blank',

@@ -1,24 +1,14 @@
 ---
-import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro"	
 import AboutMe from "../components/AboutMe.astro"
 import RecentPost from "../components/RecentPost.astro";
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body class="w-full max-w-screen-md mx-auto my-4 transition-colors duration-300">
-		<Header />
-		<main class="flex flex-col justify-center">
-			<Hero />
+<BaseLayout>
+	<Hero />
 			<AboutMe />
 			<RecentPost />
-		</main>
-	</body>
-</html>
+</BaseLayout>

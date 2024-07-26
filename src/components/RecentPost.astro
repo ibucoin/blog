@@ -16,7 +16,7 @@ let recentPosts = posts.slice(0, numberOfPostsToDisplay);
       <div class="flex gap-2 justify-between border-b pb-4">
         <div class="flex flex-col gap-4">
           <FormattedDate date={post.data.date} />
-          <a class="font-bold text-lg" href={`/blog/${post.slug}`}>
+          <a class="font-bold text-lg" href={`/posts/${post.slug}`}>
             {post.data.title}
           </a>
           <div class="flex gap-2">
@@ -25,7 +25,7 @@ let recentPosts = posts.slice(0, numberOfPostsToDisplay);
               })}
           </div>
         </div>
-        <a href={`/blog/${post.slug}`}>
+        <a href={`/posts/${post.slug}`}>
           <img
             src={post.data.cover}
             alt=""

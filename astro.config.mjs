@@ -1,4 +1,3 @@
-import path from 'node:path'
 import { defineConfig } from 'astro/config'
 import UnoCSS from 'unocss/astro'
 import mdx from '@astrojs/mdx'

@@ -1,0 +1,110 @@
+---
+title: "EeveNav导航站的搭建"
+description: "EeveNav导航站的搭建过程"
+date: "2024-10-05"
+cover: "https://pub-7cd46562d86a460881359b6ed3de331e.r2.dev/blog/2024/10/909ab13ae69850481832b52f856fa53b.png"
+tags: ["Writing"]
+---
+
+主要是针对自己的一个小需求，希望能自己整理一下收集的网站地址，并做一个简单的整理。
+## 为什么是Astro？
+市面上成熟的导航站非常多，特别还有很多开源的AI导航站可以部署，但是就是杂且乱。选用Astro为技术栈，主要是功能可控，想要什么添加什么。内容驱动，由md来显示内容，则无需数据库，Cloudflare 就能够直接部署，不需要再去烦恼服务器的问题，静态网站也十分的稳定。
+之前使用过Astro做过blog，算是一个初步的入门了解，这次主要是再更进一步的编写代码。
+
+## 详解整体结构
+![整体结构](https://pub-7cd46562d86a460881359b6ed3de331e.r2.dev/blog/2024/10/909ab13ae69850481832b52f856fa53b.png)
+从整体结构来看，主要就是Header，中间Content分成左边和右边的导航部分，底部一个Footer。
+代码地址：[https://github.com/ibucoin/EeveNav](https://github.com/ibucoin/EeveNav)
+
+### Sidebar讲解
+从图片中的Sidebar来说，我们主要是需要获取到文章的分类和标签，然后并进行的对应的显示。
+``` javascript
+export async function getCategories() {
+  const posts = await getCollection("blog");
+  // 获取分类,返回分类名称和数量,即name和count
+
+  const categories = posts.reduce(
+    (acc, post) => {
+      const category = post.data.category as string;
+
+      if (!acc[category]) {
+        acc[category] = { name: category, count: 0 } as Category;
+      }
+
+      acc[category].count++;
+
+      return acc;
+    },
+    {} as Record<string, Category>,
+  );
+
+  return Object.values(categories);
+}
+```
+
+``` javascript
+export async function getTags() {
+  const posts = await getCollection("blog");
+
+  // 获取标签，只返回标签名称，去重
+  const uniqueTags = new Set();
+
+  posts.forEach((post) => {
+    if (post.data.tags) {
+      post.data.tags.forEach((tag) => uniqueTags.add(tag));
+    }
+  });
+
+  return Array.from(uniqueTags);
+}
+
+```
+以上两个函数主要工作就是通过getCollection获取posts，然后进行筛选处理出需要的数据。
+
+### 标签页和分类页的实现
+当我们通过标签或者分类进行跳转的时候，主要是进行了一个筛选。如果是动态页面，我们可以通过数据库很简单的实现这个操作，但是在astro要怎么做呢？
+举个例子，我的地址是 categories/工具资源/ , 我需要筛选出带工具资源的所有文章和介绍链接。
+我们需要先建立一个文件, /categories/[category]/[...page].astro ，这个的路由含义就在于category 响应 工具资源, page响应后面的分页
+
+``` javascript
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection("blog");
+
+  // 获取所有唯一的分类
+
+  const uniqueCategories = [
+    ...new Set(allPosts.map((post) => post.data.category)),
+  ];
+
+  // 为每个分类生成一个页面
+
+  return uniqueCategories.flatMap((category) => {
+    const filteredPosts = allPosts.filter(
+      (post) => post.data.category === category,
+    );
+
+    const result = paginate(filteredPosts, {
+      params: { category },
+
+      pageSize: 20,
+
+      props: { category },
+
+      // 自定义路由格式
+
+      getPageNumbers: ({ totalPages }) =>
+        Array.from({ length: totalPages }, (_, i) => i + 1),
+    });
+
+    return result;
+  });
+}
+
+const { page } = Astro.props;
+
+```
+
+通过getStaticPaths，我们可以生成静态的路由表。通过paginate，我们对文章进行了一个分页处理，为每一个分类建立了一个路由。
+通过`const { page } = Astro.props`，我们获取到了相关的参数，就可以做页面的渲染了。
+
+基本上主要的知识点就在于静态路由分页的生成，其他的也还是在做页面的搭建工作

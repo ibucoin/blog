@@ -1,16 +1,19 @@
 ---
 import { type CollectionEntry } from "astro:content";
-  import rehypePrettyCode from 'rehype-pretty-code'
+import rehypePrettyCode from 'rehype-pretty-code'
 
-
-
+type Post = CollectionEntry<'blog'> & {
+  slug: string;
+};
 
 type Props = {
-  post: CollectionEntry<"blog">;
+  post: Post ;
 };
 
 
+
 const { post } = Astro.props;
+// @ts-ignore
 const { Content } = await post.render();
 ---
 <Content class="content"

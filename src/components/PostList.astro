@@ -5,7 +5,10 @@ import TagLink from "./TagLink.astro";
 
 const {posts} = Astro.props
 
-type Post = CollectionEntry<'blog'>;
+type Post = CollectionEntry<'blog'> & {
+  slug: string;
+};
+
 
 const postByYear: {
   [year: number]: Post[];
@@ -33,7 +36,7 @@ posts.forEach((post) => {
               <div class="flex gap-2 justify-between border-b pb-4">
             <div class="flex flex-col gap-4">
               <FormattedDate date={post.data.date} />
-              <a class="font-bold text-lg" href={`/posts/${post.slug}`}>
+              <a class="font-bold text-lg" href={`/posts/${post?.slug}`}>
                 {post.data.title}
               </a>
               <div class="flex gap-2">
@@ -42,7 +45,7 @@ posts.forEach((post) => {
                 })}
               </div>
             </div>
-            <a href={`/posts/${post.slug}`}>
+            <a href={`/posts/${post?.slug}`}>
               <img
                 src={post.data.cover}
                 alt=""

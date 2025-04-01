@@ -4,11 +4,11 @@ import Connect from "./Connect.astro";
 import MoreTag from "./MoreTag.astro";
 
 
-function getTheDays() {
-  const now = new Date();
-  const birthDate = new Date("1989-08-03");
+function getTheDays(): number {
+  const now:any = new Date();
+  const birthDate:any = new Date("1989-08-03");
   const diff = now - birthDate;
-  return parseInt(diff / (1000 * 60 * 60 * 24)); // 计算相差的天数并返回，返回值为整数，不保留小数位，例如：1234567890 天
+  return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1; 
 }
 
 const myDay = getTheDays()

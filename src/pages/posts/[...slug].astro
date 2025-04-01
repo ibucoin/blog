@@ -5,9 +5,13 @@ import TagLink from "../../components/TagLink.astro";
 import PostContent from "../../components/PostContent.astro"
 import { type CollectionEntry, getCollection } from 'astro:content';
 
+type Post = CollectionEntry<'blog'> & {
+  slug: string;
+};
+
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
-	return posts.map((post) => ({
+	return posts.map((post:Post) => ({
 		params: { slug: post.slug },
 		props: post,
 	}));

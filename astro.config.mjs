@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+
 import UnoCSS from 'unocss/astro'
 import mdx from '@astrojs/mdx'
 import rehypePrettyCode from 'rehype-pretty-code'

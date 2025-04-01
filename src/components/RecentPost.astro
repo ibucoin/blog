@@ -13,7 +13,7 @@ let recentPosts = posts.slice(0, numberOfPostsToDisplay);
 ---
 
 <div class="px-4 flex flex-col gap-4 mt-16">
-    <h1 class="text-3xl font-title text-center font-bold mb-8">Recent Publications</h1>
+    <h1 class="text-3xl font-title text-center font-bold mb-8">最近发布</h1>
     {
         recentPosts.map((post) => (
       <div class="flex gap-2 justify-between border-b pb-4">
@@ -39,5 +39,5 @@ let recentPosts = posts.slice(0, numberOfPostsToDisplay);
     ))
     }
    
-   <MoreTag title="View More" href="/posts" />
+   <MoreTag title="更多" href="/posts" />
 </div>

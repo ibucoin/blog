@@ -1,4 +1,4 @@
-export const SITE_TITLE = 'ibucoin(伊布币)'
+export const SITE_TITLE = 'ibucoin伊布'
 
 export const GITHUB = 'https://github.com/ibucoin'
 export const X = 'https://x.com/ibucoin'
